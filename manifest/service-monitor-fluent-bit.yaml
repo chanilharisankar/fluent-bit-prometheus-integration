@@ -1,0 +1,48 @@
+kind: Endpoints
+apiVersion: v1
+metadata:
+  name: fluentbit
+  namespace: monitoring
+  labels:
+    k8s-app: fluentbit
+subsets:
+  - addresses:
+      - ip: <vm's ip>
+    ports:
+      - name: metrics
+        port: 2020
+        protocol: TCP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: fluentbit
+  labels:
+    k8s-app: prometheus
+    prometheus: kube-prometheus
+spec:
+  selector:
+    matchLabels:
+        k8s-app: fluentbit
+  endpoints:
+    - port: metrics
+      interval: 10s
+      path: '/api/v1/metrics/prometheus'
+      honorLabels: true
+---
+apiVersion: v1
+kind: Service
+metadata:
+    name: fluentbit
+    namespace: monitoring
+    labels:
+        k8s-app: fluentbit
+spec:
+    type: ExternalName
+    externalName: <vm's ip>
+    clusterIP: ""
+    ports:
+    - name: metrics
+      port: 2020
+      protocol: TCP
+      targetPort: 2020
