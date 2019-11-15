@@ -4,7 +4,6 @@ Monitoring VM's resource with fluent-bit
 fluent-bit is famous Log Processor and Forwarder which allows you to collect data/logs from different sources. fluent-bit 0.13 onwards it comes with the feature of monitoring system resource using its inbuilt http server, so no need of any other application like node-exporter to monitor resource.
 
 ## How to do this ?
-----------------------
 configure fluent-bit in Vm.
 Here I am using **vagrant** to setup VM. You can find simple CentOS vagrant in vagrant-file folder.
 
